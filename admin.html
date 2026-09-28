@@ -1,144 +1,296 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Panel</title>
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:Arial,sans-serif;
-  background:#f4f6f8;
-  color:#17202a
+  background:#f3f4f6;
+  color:#111827;
 }
+
 .login{
   min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:20px
+  padding:20px;
 }
-.box{
-  background:white;
+
+.login-box{
   width:100%;
-  max-width:400px;
+  max-width:380px;
+  background:#fff;
   padding:30px;
   border-radius:16px;
-  box-shadow:0 10px 30px #0001
+  box-shadow:0 10px 30px rgba(0,0,0,.12);
 }
-h1{margin-top:0}
-input,select,button{
+
+.login-box h1{
+  text-align:center;
+  margin:0 0 8px;
+}
+
+.login-box p{
+  text-align:center;
+  color:#6b7280;
+  margin-bottom:25px;
+}
+
+input,select{
   width:100%;
-  padding:12px;
+  padding:13px;
   margin:7px 0;
-  border:1px solid #ddd;
-  border-radius:8px;
-  font-size:15px
+  border:1px solid #d1d5db;
+  border-radius:9px;
+  font-size:15px;
 }
+
 button{
+  border:0;
+  border-radius:9px;
+  padding:12px 18px;
   background:#111827;
   color:white;
-  border:0;
-  cursor:pointer
+  font-weight:bold;
+  cursor:pointer;
 }
-.error{color:#d00;margin-top:10px}
-.dashboard{display:none}
+
+.login-btn{
+  width:100%;
+  margin-top:10px;
+}
+
+.error{
+  display:none;
+  color:#dc2626;
+  text-align:center;
+  margin-top:15px;
+}
+
+#dashboard{
+  display:none;
+}
+
 header{
   background:#111827;
   color:white;
-  padding:18px
+  padding:16px 20px;
 }
-.wrap{
+
+.header{
   max-width:1100px;
   margin:auto;
-  padding:20px
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
+
+.logout{
+  background:#dc2626;
+}
+
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:25px 20px;
+}
+
 .card{
   background:white;
   padding:20px;
-  border-radius:14px;
+  border-radius:15px;
   margin-bottom:20px;
-  box-shadow:0 3px 15px #0000000d
+  box-shadow:0 5px 20px rgba(0,0,0,.06);
 }
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:10px
+
+.card h2{
+  margin-top:0;
 }
+
+.save{
+  width:100%;
+  margin-top:10px;
+}
+
+.message{
+  color:#15803d;
+  font-weight:bold;
+  margin-top:12px;
+}
+
+.table-box{
+  overflow-x:auto;
+}
+
 table{
   width:100%;
-  border-collapse:collapse
+  min-width:700px;
+  border-collapse:collapse;
 }
+
 th,td{
   padding:12px;
-  border-bottom:1px solid #eee;
-  text-align:left
+  border-bottom:1px solid #e5e7eb;
+  text-align:left;
 }
-.actions button{
-  width:auto;
-  padding:7px 12px;
-  margin-right:5px
+
+th{
+  background:#f9fafb;
 }
-.logout{background:#dc2626}
-.small{color:#666;font-size:13px}
+
+.edit{
+  background:#2563eb;
+  padding:8px 12px;
+}
+
+.delete{
+  background:#dc2626;
+  padding:8px 12px;
+  margin-left:5px;
+}
+
+.empty{
+  text-align:center;
+  color:#6b7280;
+}
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
+<!-- LOGIN PAGE -->
+
 <div class="login" id="loginPage">
-  <div class="box">
+
+  <div class="login-box">
+
     <h1>Admin Login</h1>
-    <p class="small">SattaKingResultsLive Admin</p>
 
-    <input id="username" placeholder="Username">
-    <input id="password" type="password" placeholder="Password">
+    <p>SattaKingResultsLive</p>
 
-    <button onclick="login()">Login</button>
+    <input
+      id="username"
+      type="text"
+      placeholder="Username"
+    >
 
-    <div class="error" id="error"></div>
-  </div>
-</div>
+    <input
+      id="password"
+      type="password"
+      placeholder="Password"
+    >
 
-<!-- DASHBOARD -->
-<div class="dashboard" id="dashboard">
+    <button
+      class="login-btn"
+      type="button"
+      onclick="login()"
+    >
+      Login
+    </button>
 
-<header>
-  <div class="wrap">
-    <strong>Admin Dashboard</strong>
-  </div>
-</header>
-
-<div class="wrap">
-
-  <div class="card">
-    <h2>Add / Update Record</h2>
-
-    <div class="grid">
-      <input id="date" type="date">
-      <input id="game" placeholder="Game name">
-      <input id="opening" placeholder="Opening">
-      <input id="closing" placeholder="Closing">
-
-      <select id="status">
-        <option value="Pending">Pending</option>
-        <option value="Updated">Updated</option>
-      </select>
+    <div id="error" class="error">
+      Wrong username or password
     </div>
 
-    <button onclick="saveRecord()">Save Record</button>
-    <button onclick="clearForm()">Clear</button>
   </div>
 
-  <div class="card">
-    <h2>Records</h2>
+</div>
 
-    <div style="overflow:auto">
+
+<!-- DASHBOARD -->
+
+<div id="dashboard">
+
+<header>
+
+  <div class="header">
+
+    <strong>Admin Dashboard</strong>
+
+    <button
+      class="logout"
+      type="button"
+      onclick="logout()"
+    >
+      Logout
+    </button>
+
+  </div>
+
+</header>
+
+
+<div class="container">
+
+  <!-- ADD RECORD -->
+
+  <div class="card">
+
+    <h2>Add / Update Result</h2>
+
+    <input
+      id="date"
+      type="date"
+    >
+
+    <input
+      id="game"
+      type="text"
+      placeholder="Game Name"
+    >
+
+    <input
+      id="opening"
+      type="text"
+      placeholder="Opening"
+    >
+
+    <input
+      id="closing"
+      type="text"
+      placeholder="Closing"
+    >
+
+    <select id="status">
+
+      <option value="Pending">Pending</option>
+      <option value="Open">Open</option>
+      <option value="Closed">Closed</option>
+
+    </select>
+
+    <button
+      class="save"
+      type="button"
+      onclick="saveRecord()"
+    >
+      Save Result
+    </button>
+
+    <div id="message" class="message"></div>
+
+  </div>
+
+
+  <!-- RECORDS -->
+
+  <div class="card">
+
+    <h2>All Records</h2>
+
+    <div class="table-box">
+
       <table>
+
         <thead>
+
           <tr>
             <th>Date</th>
             <th>Game</th>
@@ -147,171 +299,245 @@ th,td{
             <th>Status</th>
             <th>Action</th>
           </tr>
+
         </thead>
 
-        <tbody id="records"></tbody>
+        <tbody id="records">
+
+        </tbody>
+
       </table>
+
     </div>
-  </div>
 
-  <div class="card">
-    <button class="logout" onclick="logout()">Logout</button>
   </div>
 
 </div>
+
 </div>
+
 
 <script>
 
-let editIndex = -1;
-
-/*
-  DEMO LOGIN
-  Username: admin
-  Password: admin123
-
-  Production website ke liye server-side authentication
-  aur database zaroor use karein.
-*/
+/* LOGIN */
 
 function login(){
 
-  const user = document.getElementById("username").value;
-  const pass = document.getElementById("password").value;
+  var user =
+    document.getElementById("username").value.trim();
+
+  var pass =
+    document.getElementById("password").value;
 
   if(user === "admin" && pass === "admin123"){
 
-    localStorage.setItem("adminLogin","yes");
+    localStorage.setItem(
+      "adminLogin",
+      "true"
+    );
 
-    document.getElementById("loginPage").style.display="none";
-    document.getElementById("dashboard").style.display="block";
-
-    loadRecords();
+    showDashboard();
 
   }else{
 
-    document.getElementById("error").textContent =
-      "Wrong username or password";
+    document.getElementById("error").style.display =
+      "block";
 
   }
+
 }
+
+
+/* SHOW DASHBOARD */
+
+function showDashboard(){
+
+  document.getElementById("loginPage").style.display =
+    "none";
+
+  document.getElementById("dashboard").style.display =
+    "block";
+
+  loadRecords();
+
+}
+
+
+/* LOGOUT */
 
 function logout(){
 
   localStorage.removeItem("adminLogin");
 
-  document.getElementById("dashboard").style.display="none";
-  document.getElementById("loginPage").style.display="flex";
+  location.reload();
 
 }
 
-function getRecords(){
 
-  return JSON.parse(localStorage.getItem("siteRecords") || "[]");
-
-}
-
-function saveRecords(data){
-
-  localStorage.setItem("siteRecords",JSON.stringify(data));
-
-}
+/* SAVE RECORD */
 
 function saveRecord(){
 
-  const date =
+  var date =
     document.getElementById("date").value;
 
-  const game =
+  var game =
     document.getElementById("game").value.trim();
 
-  const opening =
+  var opening =
     document.getElementById("opening").value.trim();
 
-  const closing =
+  var closing =
     document.getElementById("closing").value.trim();
 
-  const status =
+  var status =
     document.getElementById("status").value;
+
 
   if(!date || !game){
 
-    alert("Date and Game name required");
+    alert("Please enter Date and Game Name.");
+
     return;
 
   }
 
-  const data = getRecords();
 
-  const record = {
-    date,
-    game,
-    opening,
-    closing,
-    status
-  };
+  var records =
+    JSON.parse(
+      localStorage.getItem("records") || "[]"
+    );
 
-  if(editIndex === -1){
 
-    data.push(record);
+  records.push({
 
-  }else{
+    date:date,
+    game:game,
+    opening:opening,
+    closing:closing,
+    status:status
 
-    data[editIndex] = record;
-    editIndex = -1;
+  });
 
-  }
 
-  saveRecords(data);
-  clearForm();
+  localStorage.setItem(
+    "records",
+    JSON.stringify(records)
+  );
+
+
+  document.getElementById("date").value="";
+  document.getElementById("game").value="";
+  document.getElementById("opening").value="";
+  document.getElementById("closing").value="";
+  document.getElementById("status").value="Pending";
+
+
+  document.getElementById("message").innerText =
+    "Result saved successfully.";
+
   loadRecords();
 
 }
 
+
+/* LOAD RECORDS */
+
 function loadRecords(){
 
-  const data = getRecords();
+  var records =
+    JSON.parse(
+      localStorage.getItem("records") || "[]"
+    );
 
-  const tbody =
-    document.getElementById("records");
+  var html="";
 
-  tbody.innerHTML="";
 
-  if(data.length === 0){
+  if(records.length === 0){
 
-    tbody.innerHTML =
-      '<tr><td colspan="6">No records added yet.</td></tr>';
+    html =
+      '<tr><td colspan="6" class="empty">No records yet</td></tr>';
+
+  }else{
+
+    records.forEach(function(r,index){
+
+      html +=
+      "<tr>" +
+
+      "<td>" + r.date + "</td>" +
+
+      "<td>" + r.game + "</td>" +
+
+      "<td>" + r.opening + "</td>" +
+
+      "<td>" + r.closing + "</td>" +
+
+      "<td>" + r.status + "</td>" +
+
+      "<td>" +
+
+      "<button class='delete' onclick='deleteRecord(" +
+      index +
+      ")'>Delete</button>" +
+
+      "</td>" +
+
+      "</tr>";
+
+    });
+
+  }
+
+
+  document.getElementById("records").innerHTML =
+    html;
+
+}
+
+
+/* DELETE */
+
+function deleteRecord(index){
+
+  if(!confirm("Delete this record?")){
 
     return;
 
   }
 
-  data.forEach((r,i)=>{
 
-    const tr = document.createElement("tr");
+  var records =
+    JSON.parse(
+      localStorage.getItem("records") || "[]"
+    );
 
-    tr.innerHTML = `
-      <td>${escapeHtml(r.date)}</td>
-      <td>${escapeHtml(r.game)}</td>
-      <td>${escapeHtml(r.opening || "--")}</td>
-      <td>${escapeHtml(r.closing || "--")}</td>
-      <td>${escapeHtml(r.status)}</td>
-      <td class="actions">
-        <button onclick="editRecord(${i})">Edit</button>
-        <button onclick="deleteRecord(${i})">Delete</button>
-      </td>
-    `;
 
-    tbody.appendChild(tr);
+  records.splice(index,1);
 
-  });
+
+  localStorage.setItem(
+    "records",
+    JSON.stringify(records)
+  );
+
+
+  loadRecords();
 
 }
 
-function editRecord(i){
 
-  const data = getRecords();
-  const r = data[i];
+/* AUTO LOGIN */
 
-  document.getElementById("date").value = r.date;
-  document.getElementById("game").value =
+if(
+  localStorage.getItem("adminLogin") === "true"
+){
+
+  showDashboard();
+
+}
+
+</script>
+
+</body>
+</html>
